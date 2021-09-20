@@ -1,0 +1,38 @@
+{
+  "playerName": "Vertex Player",
+  "logLevel": 1,
+  "autoPlay": false,
+  "controls": true,
+  "loopPlay": false,
+  "themeId": "vertex-standard",
+  "themesBaseURL": "/themes",
+  "mediaObjects": [],
+  "customData": {},
+  "authToken": "",
+  "dataTimeout": 4000,
+  "requiresRemoteConfig": false,
+  "dataSources": {
+    "videodata": {
+      "endpoint" : "https://remote-host.com/path/api_endpoint",
+      "headers" : {
+        "api_key" : {"key":"x-api-key", "value":"api_key_value"}
+      }
+    }
+  },
+  "hosts": [
+      {"key": "remote-host.com",  "env": "Prod"},
+      {"key": "localhost",  "env": "Sandbox"}
+  ],
+  "configs": [
+      {"env": "Prod", "path": "https://remote-config.prod.remote-host.com/config.json",  "user_defined_key":"user_defined_value", "conviva":"0000000000000000000000000000000000000000"}, 
+      {"env": "Sandbox", "path": "https://remote-config.sb.remote-host.com/config.json", "user_defined_key":"user_defined_value", "conviva":"0000000000000000000000000000000000000000"}
+  ],
+  "plugins": [
+    {
+      "script_family": "vertex.plugins",
+      "script_id": "convivadata", 
+      "script_path": "/plugins/vertex/conviva-data.js", 
+      "script_class": "ConvivaData"
+    }
+  ]
+}

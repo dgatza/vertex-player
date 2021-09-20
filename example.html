@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	
+	<title>Vertex Player - Functional Examples</title>
+
+	<!-- Insert the player library script tag here -->
+	
+	<!-- Remote Library - Retrieves library from a remote server or CDN -->
+	<!--script language="JavaScript" type="text/javascript" src="https://remote-cdn-host/lib/vertex-player-min.js"></script-->
+
+	<!-- Local Library - Retrieves the library locally using an absolute or relative path -->
+	<script language="JavaScript" type="text/javascript" src="/lib/vertex-player-min.js"></script>
+	
+	<!-- Insert the player library script tag here -->
+
+	<style>
+
+		/* dynamic dimensions for full screen experience with single player. */
+		.player-container-full {
+			display: block;
+			position: absolute;
+			
+			width:100%;
+			height: 100%;
+		}
+
+		/* Confined dimensions for multiple players. */
+		.player-container-small {
+			display: block;
+			position: absolute; /* Forces the player to fit in container */
+			
+			width:720px;
+			height: 405px;
+			
+			float: left;
+			margin: 10px;
+		}
+
+		/* External test button */
+		.player-parent-button {
+			position:absolute;
+			display:block;
+			width:60px;
+			height:40px;
+			margin:10px;
+			background-color:rgba(0,0,0,0.5);
+			border: none;
+			cursor: pointer;
+
+			z-index:8000;
+		}
+
+		/* External test button hover */
+		.player-parent-button:hover {
+			background-color:rgba(0,0,0,0.4);
+		}
+
+	</style>
+
+</head>
+<body>
+
+	<script>
+		window.onload = function (event) {
+			
+			// 	Vertex Player
+			// 	
+			// 	There are two modes of playback - Direct Play and API Play.  The player determines the type of play based on 
+			// 	the values that you pass into your individual mediaObjects.  You'll notice that mediaObjects is an array, which
+			// 	allows you to pass in a list of media objects sequentially and it can be a combination of both Direct Play and
+			// 	API Play media objects.
+			// 
+			//		Direct Play:
+			// 		This mode of play allows you to directly pass a playbackURL into the player without the need for a remote
+			// 		data source the pull from.  This is useful for situations where you already have the playback data and you
+			// 		don't need to call a remote source.  This however is the least secure way of playing video and should only
+			// 		be considered in situations where the playback URL doesn't need to be secured OR the player is being used
+			// 		as a background element, promo player or to play inidividual media files like MP4s.
+			// 		
+			// 		Required:
+			// 		mediaObjects[i].url 
+			// 		
+			// 		Optional:
+			// 		mediaObjects[i].thumbnail
+			// 		mediaObjects[i].title
+			// 		
+			// 		---------------------------------------------------------------------------------------------------------		
+			// 		
+			// 		API Play:
+			// 		This mode of play allows you to pass in the video id of the video you want to play as well as an API auth
+			// 		token in order for your custom plugin to call your remote datasource for the playback data.  This is the 
+			// 		method that should be used for all entitled video.
+			// 		
+			// 		Required:
+			// 		mediaObjects[i].id
+			// 		
+			// 		Optional: 
+			// 		mediaObjects[i].thumbnail - Overrides API thumbnail
+			// 		mediaObjects[i].title - Overrides API title
+			// 		
+			// 		Don't Use:
+			// 		mediaObjects[i].url
+
+
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			//////////////////////////////////////////// Example: Small Players /////////////////////////////////////////
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+			// Player 1 - Basic player integration
+			// ---------------------------------------------------------------------------------------------------------		
+			
+			// Define player container
+			var vertexSmall1 = document.createElement('div');
+			
+			// Define player container properties
+			vertexSmall1.id = "vertexSmall1";
+			vertexSmall1.className = "player-container-small";
+			vertexSmall1.style.top = "10px";
+			document.body.appendChild(vertexSmall1);
+
+			// Define player override configuration - Example: Basic Configuration / Direct Play
+			// ---------------------------------------------------------------------------------------------------------		
+			var playerConfiguration1 = {
+				logLevel: 4, 				// Optional - Default: 1
+				controls: true, 			// Optional - Default: true
+				autoPlay: true, 			// Optional - Default: true
+				loopPlay: true, 			// Optional - Default: false
+				mediaObjects: [ 			// Required - Default: Playback error
+					{ // Direct Play - HLS - With title
+						url:'https://content.uplynk.com/7e70519c486d4139b7473f8b5c4af7b0.m3u8', 	// Required - Default: Playback error
+						title:'Caminandes'															// Optional - Default: Empty Title
+					},
+					{ // Direct Play - MPEG-DASH - No title
+						url:'http://www.bok.net/dash/tears_of_steel/cleartext/stream.mpd' 			// Required - Default: Playback error
+					}
+				]
+			}
+
+			// Create Vertex Player instance, passing container and configuration
+			var playerObject1 = new VertexPlayer(vertexSmall1, playerConfiguration1);
+
+			// Creates a listener on the player for any particular event OR for all events using 'OnInstanceEvents'.
+			playerObject1.establishPlayerListenerWithCallback("OnInstanceEvents", function(event){
+				//console.log("EVENT", event.detail.data);
+			});
+
+
+			// Player 2
+			// ---------------------------------------------------------------------------------------------------------		
+			/*
+			var vertexSmall2 = document.createElement('div');
+		
+			vertexSmall2.id = "vertexSmall2";
+			vertexSmall2.className = "player-container-small";
+			vertexSmall2.style.top = "435px";
+			document.body.appendChild(vertexSmall2);
+
+			// Example: Expanded Configuration - Combination Direct Play / API Play
+			// ---------------------------------------------------------------------------------------------------------	
+			var playerConfiguration2 = {
+				logLevel: 4, 				// Optional - Default: 1
+				controls: true, 			// Optional - Default: true
+				autoPlay: false, 			// Optional - Default: true
+				themeId: 'vertex-standard', // Optional - Default: Configuration-based
+				dataTimeout: 2000,			// Optional - Default: Configuration-based
+				mediaObjects: 				// Required - Default: Playback error
+				[
+					{ // Direct Play - HLS
+						url:'https://content.uplynk.com/7e70519c486d4139b7473f8b5c4af7b0.m3u8', // Required - Default: Playback error
+						title:'Caminandes' 														// Optional - Default: Empty Title
+					}
+					{ // Direct Play - MPEG-DASH
+						url:'http://www.bok.net/dash/tears_of_steel/cleartext/stream.mpd' // Required - Default: Playback error
+					},
+					{ // Direct Play - Static MP4
+						url:'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4' // Required - Default: Playback error
+					},
+					{ // Direct Play - Static WebM
+						url:'http://clips.vorwaerts-gmbh.de/big_buck_bunny.webm' // Required - Default: Playback error
+					}
+				],
+				customData: // Optional - No Defaults - Pass as needed for custom plugins
+				{
+					tealiumVisitorId: "tealiumVisitorId",
+	        		tealiumDataSourceKey: "tealiumDataSourceKey",
+	        		resumeVideo: true
+				},
+				// Direct Play: Optional
+				// API Play: Required - If API requires auth token / Optional - If API does not require auth token
+				authToken: 'Bearer eyJraWQiOiIzUlRMQ1l1MFJWZ09LMlZSWWZ1S1dSVnE2WWhQa2JMT3BHM2o2ejArRDhJPSIsImFsZyI6IlJTMjU2In0.eyJjdXN0b206ZWlkcyI6IntcImVpZHNcIjpbXCJPUEVORklUXCJdfSIsInN1YiI6IjA1MDM5MWYyLTY1NDYtNGM2Yi05ZGNkLTBjYzZkNWE3ZjgwNyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJjdXN0b206Y3VzdG9tZXIiOiJ5IiwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLXdlc3QtMi5hbWF6b25hd3MuY29tXC91cy13ZXN0LTJfUk5vZFRrdU5DIiwiY29nbml0bzp1c2VybmFtZSI6IjA1MDM5MWYyLTY1NDYtNGM2Yi05ZGNkLTBjYzZkNWE3ZjgwNyIsImdpdmVuX25hbWUiOiJQb3N0bWFuIiwiYXVkIjoiNjMxbmNqYm5lbGs4NTRrb2pqYXBqNTUzdGgiLCJldmVudF9pZCI6IjE5YzM2OGJhLWY5OTUtMTFlOC1hNjNlLWI5NjMyYjM3Y2RlNiIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNTQ0MTI3OTQxLCJleHAiOjE1NDQxMzE1NDEsImlhdCI6MTU0NDEyNzk0MSwiZmFtaWx5X25hbWUiOiJUZXN0ZXJzb24iLCJlbWFpbCI6Im5idXNlcjg2OTE1Mzk3MTMyODFAeW9wbWFpbC5jb20ifQ.jwUZ7moiLsePRdCbYfSCC6grvOdDb53yaU2z7FMMjSvyGLoRynK2PJ_SRrFymq7Kauo9jWS5S7XFaQTEwqXqxlWVLMy9WB6CE74p1fbhG-fVGqEtE-tT6imxXpe2Mpc-7IITZg1x-Lb2Z6W0GQEY8yIv4C5WukKmuCdUvvfHczyhLXG4FxP6mfy1P61WMNqyCIt5WG_nYPOc8pUlzDe3YlCVfnGHL4zamW3quV5qAsYG1sC9vxsAKllPSInMj9cyZMSG7kaYnfzDFLoXygBAkREkVPBJJ9-VeOG3KXjXmEceOAt6jcJoXMDn91GFa0sqParKIpZsXvCNzJxGXNjBvg'
+			}
+
+			var playerObject2 = new VertexPlayer(vertexSmall2, playerConfiguration2);
+			*/
+
+
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////////////////// Example: Full Screen Players //////////////////////////////////////
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+			/*
+			var vertexFullScreen = document.createElement('div');
+		
+			vertexFullScreen.id = "vertexFullScreen";
+			vertexFullScreen.className = "player-container-full";
+			document.body.appendChild(vertexFullScreen);
+
+
+			// Example: Basic Vertex Configuration - API Play
+			// ---------------------------------------------------------------------------------------------------------
+			var playerConfigVertex = {
+				logLevel: 0,
+				autoPlay: true,
+				controls: true,
+				mediaObjects:[
+					{id: 'API_PLAY_ID_001', title: 'API Play Example 1'},
+					{id: 'API_PLAY_ID_002', title: 'API Play Example 2'}
+				],
+				customData:
+				{
+					tealiumVisitorId: "tealiumVisitorId",
+	        		tealiumDataSourceKey: "tealiumDataSourceKey",
+	        		resumeVideo: false
+				},
+
+				authToken: 'Bearer eyJraWQiOiIzUlRMQ1l1MFJWZ09LMlZSWWZ1S1dSVnE2WWhQa2JMT3BHM2o2ejArRDhJPSIsImFsZyI6IlJTMjU2In0.eyJjdXN0b206ZWlkcyI6IntcImVpZHNcIjpbXCJPUEVORklUXCJdfSIsInN1YiI6IjA1MDM5MWYyLTY1NDYtNGM2Yi05ZGNkLTBjYzZkNWE3ZjgwNyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJjdXN0b206Y3VzdG9tZXIiOiJ5IiwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLXdlc3QtMi5hbWF6b25hd3MuY29tXC91cy13ZXN0LTJfUk5vZFRrdU5DIiwiY29nbml0bzp1c2VybmFtZSI6IjA1MDM5MWYyLTY1NDYtNGM2Yi05ZGNkLTBjYzZkNWE3ZjgwNyIsImdpdmVuX25hbWUiOiJQb3N0bWFuIiwiYXVkIjoiNjMxbmNqYm5lbGs4NTRrb2pqYXBqNTUzdGgiLCJldmVudF9pZCI6IjUzZDJkODE3LTFhYWEtMTFlOS1iMmQwLWNkODQzMGZkMjA4MyIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNTQ3NzY1NDQ2LCJleHAiOjE1NDc3NjkwNDYsImlhdCI6MTU0Nzc2NTQ0NiwiZmFtaWx5X25hbWUiOiJUZXN0ZXJzb24iLCJlbWFpbCI6Im5idXNlcjg2OTE1Mzk3MTMyODFAeW9wbWFpbC5jb20ifQ.AgioGb_S4RskXSqoESC12QIFLeb52s6CZWcyYYpgmFgbXqgocIeJHOu10m9XL7PYclj9vufCpMpsNw009KTUuZK4M4v-p_ZOM2cfAwVCvV7RcKKFp-Eq9VHoMz2VgYTyLNsUKayrVLSoX6iR-kMu2harUnce7uCM0bIwLVlNLfVJIMzT9M5F6Bzwd7criDa7uzuBgd3d1B1rUEtBzeX1RibSvV-iKtF3QGh9hQvqVzXwlh6I-pM-aa5EgK_fClmIHwu5UjusJINf9W1kKomYEt6Lg1x_BuLefTFDSmMmdpySaM220YcLtHfoN-i6f09Fh5XUSXLP7VHlxseIIMe66A'
+			}
+
+			var playerObjectVertex = new VertexPlayer(vertexFullScreen, playerConfigVertex);
+
+			playerObjectVertex.establishPlayerListenerWithCallback("OnInstanceEvents", function(event){
+				//console.log("EVENT", event.detail.data);
+			});
+			*/
+
+
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			/////////////////////////////////////// Example: External Player Control ////////////////////////////////////
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+			/*
+			// Create an external button that can be used to manipulate the player's function.
+			var playButton = document.createElement('button');
+		
+			playButton.id = "playButton";
+			playButton.className = "player-parent-button";
+			playButton.innerHTML = "PLAY";
+			document.body.appendChild(playButton);
+
+
+			// Example 1 - Initialize with media for immediate load/play, initiate via external button interaction for autoplay
+			playButton.onclick = function(event) {
+
+				var playerObjectVertex = new VertexPlayer(vertexFullScreen, playerConfigVertex);
+
+				playerObjectVertex.establishPlayerListenerWithCallback("OnInstanceEvents", function(event) {
+					//console.log("EVENT", event.detail.data);
+				});
+			}
+			*/
+
+
+			// Example 2 - Direct Update of Media , initiated via button interaction for autoplay
+			/*
+			var playerObjectVertex = new VertexPlayer(vertexFullScreen, playerConfigVertex);
+
+			playButton.onclick = function(event) {
+				playerObjectVertex.updateMedia(
+		        	[
+						{ // Direct Play - HLS
+							url:'https://content.uplynk.com/7e70519c486d4139b7473f8b5c4af7b0.m3u8', // Required - Default: Playback error
+							title:'Caminandes' 														// Optional - Default: Empty Title
+						}
+					]
+				);
+			}*/
+
+
+			// Load Method 3 - Preload for Quick Playback, initiate via button interaction for autoplay
+			/*
+			var playerObjectVertex = new VertexPlayer(vertexFullScreen, playerConfigVertex);
+
+			playerObjectVertex.establishPlayerListenerWithCallback("OnReadyForMedia", function(event) {
+				playerObjectVertex.preloadMedia(
+		        	[
+						{ // Direct Play - HLS
+							url:'https://content.uplynk.com/7e70519c486d4139b7473f8b5c4af7b0.m3u8', // Required - Default: Playback error
+							title:'Caminandes' 														// Optional - Default: Empty Title
+						}
+					]
+				);
+			});
+			
+			playButton.onclick = function(event) {
+				playerObjectVertex.play();
+			}
+			*/
+		}
+	</script>
+
+</body>
+</html>

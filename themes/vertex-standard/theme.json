@@ -1,0 +1,5 @@
+{
+	"layout"		: 	"/vertex-standard/default_layout.json",
+	"style"			:	"/vertex-standard/default_style.css",
+	"behavior"		:	"/vertex-standard/default_behavior.js"
+}

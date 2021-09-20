@@ -1,0 +1,368 @@
+{
+	"id": "ui",
+	"class": "ui-container",
+	"type": "user_interface",
+	"hotSpot": false,
+	"features": {
+		"controls": {
+			"id": "playerControls",
+			"class": "controls_container",
+			"type": "ui_feature",
+			"hotSpot": false,
+			"handler": "ControlsHandler",
+			"properties": {
+				"autohide":{"status":true, "showInterval": 5000, "fadeInInterval": 500, "fadeOutInterval": 1000},
+				"type": "controls.overlay"
+			},
+			"sections" : [
+				{
+					"id": "ControlsOverlay",
+					"class": "controls_overlay",
+					"type": "container_section",
+					"hotSpot": false,
+					"components" : [
+						{
+							"id": "controlsRRButton",
+							"class": "controls_rr_btn",
+							"type": "btn_std",
+							"hotSpot": true,
+							"properties": {
+								"baseState": "component.enabled",
+								"visualStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0, 
+											"name": "normal"
+										}
+									]
+								},
+								"functionalStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0,
+											"name": "OnRRComponentClicked"
+										}
+									]
+								}
+							}
+						},
+						{
+							"id": "controlsPlayButton",
+							"class": "controls_play_btn",
+							"type": "toggle_sync",
+							"hotSpot": true,
+							"properties": {
+								"baseState": "component.enabled",
+								"visualStates": {
+									"defaultState": 1,
+									"availableStates": [
+										{
+											"id": 0, 
+											"name": "play"
+										},
+										{
+											"id": 1,
+											"name": "pause"
+										}
+									]
+								},
+								"functionalStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0,
+											"name": "OnPauseComponentClicked"
+										},
+										{
+											"id": 1, 
+											"name": "OnPlayComponentClicked"
+										}
+									]
+								}
+							}
+						},
+						{
+							"id": "controlsFFButton",
+							"class": "controls_ff_btn",
+							"type": "btn_std",
+							"hotSpot": true,
+							"properties": {
+								"baseState": "component.enabled",
+								"visualStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0, 
+											"name": "normal"
+										}
+									]
+								},
+								"functionalStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0,
+											"name": "OnFFComponentClicked"
+										}
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"id": "ControlsStandardSection1",
+					"class": "controls_section1",
+					"type": "container_section",
+					"hotSpot": true,
+					"components" : [
+						{
+							"id": "controlsTimeline",
+							"class": "timeline_slider",
+							"type": "slider_timeline",
+							"hotSpot": false,
+							"properties": {
+								"min": 0,
+								"max": 100,
+								"value": 0,
+								"scrubbing": false,
+								"baseState": "component.enabled",
+								"functionalState": "OnTimelineComponentChanged"
+							}
+						},
+						{
+							"id": "controlsTimer",
+							"class": "controls_timer",
+							"type": "text_std",
+							"hotSpot": false,
+							"properties": {
+								"baseState": "component.enabled",
+								"clickable" : {"status": true, "action": "OnTimerClick"},
+								"defaultText": "00:00"
+							}
+						}
+					]
+				},
+				{
+					"id": "ControlsStandardSection2",
+					"class": "controls_section2",
+					"type": "container_section",
+					"hotSpot": true,
+					"components" : [
+						{
+							"id": "controlsMuteButton",
+							"class": "controls_mute_btn",
+							"type": "toggle_sync",
+							"hotSpot": false,
+							"properties": {
+								"baseState": "component.enabled",
+								"visualStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0, 
+											"name": "unmute"
+										},
+										{
+											"id": 1,
+											"name": "mute"
+										}
+									]
+								},
+								"functionalStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0,
+											"name": "OnMuteComponentClicked"
+										},
+										{
+											"id": 1, 
+											"name": "OnUnmuteComponentClicked"
+										}
+									]
+								}
+							}
+						},
+						{
+							"id": "controlsVolume",
+							"class": "volume_slider",
+							"type": "slider_std",
+							"hotSpot": false,
+							"properties": {
+								"min": 0,
+								"max": 100,
+								"value": 70,
+								"baseState": "component.enabled",
+								"functionalState": "OnVolumeComponentChange"
+							}
+						},
+						{
+							"id": "controlsTitle",
+							"class": "controls_title",
+							"type": "text_std",
+							"hotSpot": false,
+							"properties": {
+								"baseState": "component.enabled",
+								"clickable" : {"status": false, "action": "OnTitleClick"},
+								"defaultText": ""
+							}
+						},
+						{
+							"id": "controlsFullScreenButton",
+							"class": "controls_full_screen_btn",
+							"type": "toggle_sync",
+							"hotSpot": false,
+							"properties": {
+								"baseState": "component.enabled",
+								"visualStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0, 
+											"name": "normal"
+										},
+										{
+											"id": 1,
+											"name": "fullscreen"
+										}
+									]
+								},
+								"functionalStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0,
+											"name": "OnFullScreenComponentClicked"
+										}
+									]
+								}
+							}
+						},
+						{
+							"id": "controlsSubtitleButton",
+							"class": "controls_subtitle_btn",
+							"type": "btn_std",
+							"hotSpot": false,
+							"properties": {
+								"baseState": "component.hidden",
+								"visualStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0, 
+											"name": "normal"
+										}
+									]
+								},
+								"functionalStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0,
+											"name": "OnSubtitleComponentClicked"
+										}
+									]
+								}
+							}
+						},
+						{
+							"id": "controlsCastButton",
+							"class": "controls_cast_btn",
+							"type": "toggle_async",
+							"hotSpot": false,
+							"properties": {
+								"baseState": "component.hidden",
+								"visualStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0, 
+											"name": "not_connected"
+										},
+										{
+											"id": 1,
+											"name": "connected"
+										},
+										{
+											"id": 2,
+											"name": "connecting1"
+										},
+										{
+											"id": 3,
+											"name": "connecting2"
+										},
+										{
+											"id": 4,
+											"name": "connecting3"
+										}
+									]
+								},
+								"functionalStates": {
+									"defaultState": 0,
+									"availableStates": [
+										{
+											"id": 0,
+											"name": "OnCastOffComponentClicked"
+										},
+										{
+											"id": 1, 
+											"name": "OnCastOnComponentClicked"
+										}
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		"menus": {
+			"id": "playerMenus",
+			"class": "menus_container",
+			"type": "ui_feature",
+			"hotSpot": false,
+			"handler": "MenuHandler",
+			"properties": {
+				"autohide":{"status":true, "showInterval": 5000, "fadeInInterval": 500, "fadeOutInterval": 1000},
+				"type": "menus.overlay"
+			},
+			"sections" : [
+				{
+					"id": "languageMenu",
+					"class": "menu_language",
+					"type": "menu_section",
+					"hotSpot": false,
+					"components" : [
+						{
+							"id": "subtitlesMenu",
+							"class": "menu_subtitles",
+							"type": "menu_std",
+							"hotSpot": true,
+							"properties": {
+								"menuTitle": "Subtitles",
+								"menuItemKey": "id",
+								"baseState": "component.enabled",
+								"functionalState": "OnSubtitleMenuItemClicked"
+							}
+						},
+						{
+							"id": "audioMenu",
+							"class": "menu_audio",
+							"type": "menu_std",
+							"hotSpot": true,
+							"properties": {
+								"menuTitle": "Audio",
+								"menuItemKey": "id",
+								"baseState": "component.enabled",
+								"functionalState": "OnAudioMenuItemClicked"
+							}
+						}
+					]
+				}
+			]
+		}
+	}
+}
