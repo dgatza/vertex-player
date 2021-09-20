@@ -9,46 +9,49 @@ A JavaScript video player framework that greatly expands the utility of the base
 - Custom configurations - Developers can clone and expand on the default player configuration, which can be selected dynamically from the player embed block.
 - Native HTML5 playback features - Includes native support for HTML5 video playback features like text tracks, audio tracks.
 
-## Integration
-Import Vertex Player library:
+
+## Player Integration
+Import the Vertex Player library in your page's head:
 ```
 <script language="JavaScript" type="text/javascript" src="./path-to-vertex/lib/vertex-player-min.js"></script>
 ```
 
+
 Define a player container:
 ```
 var playerContainer = document.createElement('div');
-playerContainer.id = "playerContainer";
-playerContainer.className = "player-container-small";
 document.body.appendChild(playerContainer);
 ```
+
 
 Define a basic player configuration:
 ```
 var playerConfiguration = {
-    logLevel: 4, 				// Optional - Default: 1
+    logLevel: 4, 			// Optional - Default: 1
     autoPlay: true, 			// Optional - Default: true
     loopPlay: true, 			// Optional - Default: false
     mediaObjects: [ 			// Required - Default: Playback error
-        {   // Direct Play - HLS - With title
-            url:'https://content.uplynk.com/7e70519c486d4139b7473f8b5c4af7b0.m3u8', 	// Required - Default: Playback error
-            title:'Caminandes'															// Optional - Default: Empty Title
+        {
+            url:'https://content.uplynk.com/7e70519c486d4139b7473f8b5c4af7b0.m3u8',
+            title:'Caminandes'
         },
-        {   // Direct Play - MPEG-DASH - No title
-            url:'http://www.bok.net/dash/tears_of_steel/cleartext/stream.mpd' 			// Required - Default: Playback error
+        {
+            url:'http://www.bok.net/dash/tears_of_steel/cleartext/stream.mpd'
         }
     ]
 }
 ```
 
-Create Vertex Player instance, passing container and configuration:
+
+Create a Vertex Player instance, passing container and configuration:
 ```
-var playerObject1 = new VertexPlayer(playerContainer, playerConfiguration);
+var playerInstance = new VertexPlayer(playerContainer, playerConfiguration);
 ```
+
 
 Listeners can be created on the player for any particular event OR for all events using 'OnInstanceEvents':
 ```
-playerObject1.establishPlayerListenerWithCallback("OnInstanceEvents", function(event){
+playerInstance.establishPlayerListenerWithCallback("OnInstanceEvents", function(event){
     console.log("EVENT", event.detail.data);
 });
 ```
